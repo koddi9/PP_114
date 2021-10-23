@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class UserDaoHibernateImpl implements UserDao {
-    private static String CREATE_TABLE_users="CREATE TABLE users" +
+    private static String CREATE_TABLE_users="CREATE TABLE IF NOT EXISTS users" +
             "(id BIGINT NOT NULL AUTO_INCREMENT, " +
             " name VARCHAR(50), " +
             " lastname VARCHAR(50), " +
@@ -37,7 +37,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try(Session session= Util.getSessionFactory().getCurrentSession()){
             Transaction transaction = session.getTransaction();
             transaction.begin();
-            session.createSQLQuery("DROP TABLE users").executeUpdate();
+            session.createSQLQuery("DROP TABLE IF EXISTS users").executeUpdate();
             transaction.commit();
         }
     }
@@ -56,16 +56,33 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-
+        try(Session session= Util.getSessionFactory().getCurrentSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            session.createQuery("delete User where id="+id).executeUpdate();
+            transaction.commit();
+        }
     }
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        List<User> users=null;
+        try(Session session= Util.getSessionFactory().getCurrentSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            users= session.createQuery("from User",User.class).list();
+            transaction.commit();
+        }
+        return users;
     }
 
     @Override
     public void cleanUsersTable() {
-
+        try(Session session= Util.getSessionFactory().getCurrentSession()){
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            session.createQuery("delete User").executeUpdate();
+            transaction.commit();
+        }
     }
 }
