@@ -1,7 +1,7 @@
-package jm.task.core.jdbc.dao;
+package jm.task.core.hibernate.dao;
 
-import jm.task.core.jdbc.model.User;
-import jm.task.core.jdbc.util.Util;
+import jm.task.core.hibernate.model.User;
+import jm.task.core.hibernate.util.Util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +29,6 @@ public class UserDaoJDBCImpl implements UserDao {
     public void createUsersTable() {
         try(Connection connection = Util.getConnection();
             PreparedStatement prepStatement = connection.prepareStatement(CREATE_TABLE_users)) {
-
             prepStatement.executeUpdate();
         }
         catch(SQLException sqlE) {
