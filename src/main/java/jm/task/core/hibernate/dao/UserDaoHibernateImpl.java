@@ -11,19 +11,17 @@ import java.util.List;
 
 
 public class UserDaoHibernateImpl implements UserDao {
-    private static String CREATE_TABLE_users="CREATE TABLE IF NOT EXISTS users" +
-            "(id BIGINT NOT NULL AUTO_INCREMENT, " +
-            " name VARCHAR(50), " +
-            " lastname VARCHAR(50), " +
-            " age TINYINT, " +
-            " PRIMARY KEY (id))";
-    public UserDaoHibernateImpl() {
 
-    }
-
+    public UserDaoHibernateImpl() {}
 
     @Override
     public void createUsersTable() {
+        String CREATE_TABLE_users="CREATE TABLE IF NOT EXISTS users" +
+                "(id BIGINT NOT NULL AUTO_INCREMENT, " +
+                " name VARCHAR(50), " +
+                " lastname VARCHAR(50), " +
+                " age TINYINT, " +
+                " PRIMARY KEY (id))";
         try(Session session= Util.getSessionFactory().getCurrentSession()){
             Transaction transaction = session.getTransaction();
             transaction.begin();
@@ -59,7 +57,8 @@ public class UserDaoHibernateImpl implements UserDao {
         try(Session session= Util.getSessionFactory().getCurrentSession()){
             Transaction transaction = session.getTransaction();
             transaction.begin();
-            session.createQuery("delete User where id="+id).executeUpdate();
+            session.delete(session.get(User.class,id));
+//            session.createQuery("delete User where id=:id").setParameter("id",id).executeUpdate();
             transaction.commit();
         }
     }

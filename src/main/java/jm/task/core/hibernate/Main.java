@@ -22,7 +22,8 @@ public class Main {
         System.out.println("Users after inserting:");
         users.forEach(e-> System.out.println(e.toString()));
 
-        userService.cleanUsersTable();
+//        userService.cleanUsersTable();
+        userService.removeUserById(2);
         users=userService.getAllUsers();
         System.out.println("Users after cleaning:");
         users.forEach(e -> System.out.println(e.toString()));

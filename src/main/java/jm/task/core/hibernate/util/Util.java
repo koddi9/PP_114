@@ -18,7 +18,6 @@ public class Util {
     private static String dbUsername="root";
     private static String dbPassword="localdb";
 
-
     public static Connection getConnection(){
         Connection connecteion = null;
         try{
